@@ -1,0 +1,30 @@
+name: Financial Streaming Pipeline CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-stream-engine:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Production Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Streaming Pipeline Requirements
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas pyarrow requests numpy
+
+    - name: Run Core Code Syntax Verification
+      run: |
+        python -m compileall streaming_src/
+        printenv
+
